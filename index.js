@@ -11,24 +11,31 @@ const defaultState = {
 }
 
 // Actions!
-const actionIncrement = {
-    type: 'increment'
+const actionIncrement = (amount) => {
+    return {
+        type: 'increment',
+        payload: amount
+    }
 }
 
-const actionDecrement = {
-    type: 'decrement'
+const actionDecrement = (amount) => {
+    return {
+        type: 'decrement',
+        payload: amount
+    }
 }
 
 // Reducer!
 const account = (state=defaultState, action) => {
+    console.log("Action is: ", action);
     switch (action.type) {
         case 'increment':
             return {
-                balance: state.balance + 1
+                balance: state.balance + action.payload
             };
         case 'decrement':
             return {
-                balance: state.balance - 1
+                balance: state.balance - action.payload
             };
         default:
             return state;
@@ -50,13 +57,17 @@ store.subscribe(() => {
 
 const incrementButton = document.querySelector('#increment');
 const decrementButton = document.querySelector('#decrement');
+const amount = document.querySelector('#amount');
+
 
 incrementButton.addEventListener('click', (event) => {
     event.preventDefault();
-    store.dispatch(actionIncrement);
-})
+    const amountValue = parseInt(amount.value);
+    store.dispatch(actionIncrement(amountValue));
+});
 
 decrementButton.addEventListener('click', (event) => {
     event.preventDefault();
-    store.dispatch(actionDecrement);
-})
+    const amountValue = parseInt(amount.value);
+    store.dispatch(actionDecrement(amountValue));
+});
