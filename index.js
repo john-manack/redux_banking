@@ -1,5 +1,7 @@
 'use strict';
-import { createStore } from 'redux';
+// import { createStore } from 'redux';
+
+const { createStore } = Redux;
 
 console.log('App Started!');
 
@@ -33,15 +35,28 @@ const account = (state=defaultState, action) => {
     }
 }
 
-const store = createStore(account);
-
-console.log('The store is: ', store)
+const store = createStore(
+    account, 
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 store.subscribe(() => {
     console.log('subscribing to state changes...');
     const state = store.getState();
     console.log('State is: ', state);
+    const balance = document.querySelector('#balance');
+    balance.innerHTML = state.balance;
 });
 
-store.dispatch(actionIncrement);
+const incrementButton = document.querySelector('#increment');
+const decrementButton = document.querySelector('#decrement');
 
+incrementButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    store.dispatch(actionIncrement);
+})
+
+decrementButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    store.dispatch(actionDecrement);
+})
